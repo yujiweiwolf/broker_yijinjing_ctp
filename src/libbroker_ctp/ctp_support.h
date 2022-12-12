@@ -12,7 +12,8 @@
 #pragma comment(lib, "thosttraderapi_se.lib")
 #endif
 
-namespace co {
+using namespace co;
+namespace yijinjing {
     // CTP对查询请求设置了流量控制, 每秒最多进行一次查询操作
     constexpr int64_t CTP_FLOW_CONTROL_MS = 1000;
     constexpr int kStartupStepInit = 0;  // 启动步骤：开始
@@ -42,6 +43,7 @@ namespace co {
     TThostFtdcOrderPriceTypeType order_price_type2ctp(int64_t v);
     int64_t ctp_order_price_type2std(TThostFtdcOrderPriceTypeType v);
     TThostFtdcTimeConditionType order_time_condition2ctp(string v);
+    string GetMarketSuffix(int64_t market);
 
     double ctp_equity(CThostFtdcTradingAccountField* p);
     void DeleteCzceCode(string& code);

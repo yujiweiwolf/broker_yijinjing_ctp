@@ -6,11 +6,12 @@
 #include <vector>
 
 #include <x/x.h>
+#include "broker_options.h"
 
 
 using namespace std;
 
-namespace co {
+namespace yijinjing {
 
     class Config {
     public:
@@ -50,6 +51,10 @@ namespace co {
             return disable_subscribe_;
         }
 
+        inline BrokerOptionsPtr options() {
+            return options_;
+        }
+
     protected:
         Config() = default;
         ~Config() = default;
@@ -60,6 +65,8 @@ namespace co {
 
     private:
         static Config* instance_;
+        BrokerOptionsPtr options_;
+
         string ctp_trade_front_;
         string ctp_broker_id_;
         string ctp_investor_id_;

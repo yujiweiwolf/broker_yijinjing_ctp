@@ -43,8 +43,8 @@ SET(BROKER_TEST "test")
 #add_executable(${BROKER} src/ctp_broker/main.cc)
 #target_link_libraries(${BROKER}
 #        ${BROKER_LIBRARY} thosttraderapi_se LinuxDataCollect broker coral swordfish x stdc++fs yaml-cpp  clickhouse-cpp-lib-static boost_date_time boost_filesystem boost_regex boost_system  boost_chrono boost_log boost_program_options boost_thread boost_iostreams z protobuf protobuf-lite sodium zmq ssl crypto iconv pthread dl)
-#
-#add_executable(${BROKER_TEST} src/test_broker/test.cc)
-#target_link_libraries(${BROKER_TEST}
-#        ${BROKER_LIBRARY} thosttraderapi_se LinuxDataCollect broker coral swordfish x stdc++fs yaml-cpp  clickhouse-cpp-lib-static boost_date_time boost_filesystem boost_regex boost_system  boost_chrono boost_log boost_program_options boost_thread boost_iostreams z protobuf protobuf-lite sodium zmq ssl crypto iconv pthread dl)
+
+add_executable(${BROKER_TEST} src/test_broker/test.cc)
+target_link_libraries(${BROKER_TEST}
+        ${BROKER_LIBRARY} thosttraderapi_se LinuxDataCollect journal x stdc++fs yaml-cpp clickhouse-cpp-lib-static boost_date_time boost_filesystem boost_regex boost_system  boost_chrono boost_log boost_program_options boost_thread boost_iostreams z protobuf protobuf-lite sodium zmq ssl crypto iconv pthread dl)
 

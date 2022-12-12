@@ -12,10 +12,10 @@
 #include "ctp_support.h"
 #include "config.h"
 
-namespace co {
+namespace yijinjing {
     class CTPBroker : public Broker, public CThostFtdcTraderSpi {
     public:
-        CTPBroker(string accout_id);
+        CTPBroker();
         virtual ~CTPBroker();
 
         virtual void OnInit();
@@ -56,7 +56,7 @@ namespace co {
         virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
         /// 请求查询报单响应
-        virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+        virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
         /// 请求查询成交响应
         virtual void OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

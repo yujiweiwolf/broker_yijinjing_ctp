@@ -1,6 +1,6 @@
 #include "config.h"
 
-namespace co {
+namespace yijinjing {
 
     Config* Config::instance_ = 0;
 
@@ -15,6 +15,7 @@ namespace co {
     void Config::Init() {
         string filename = x::FindFile("config.ini");
         x::INI ini = x::Ini(filename);
+        options_ = BrokerOptions::Load(filename);
 
         //ctp_market_front_ = ini.get<string>("ctp.ctp_market_front");
         ctp_trade_front_ = ini.get<string>("ctp.ctp_trade_front");
@@ -37,9 +38,9 @@ namespace co {
         }
         stringstream ss;
         ss << "+-------------------- configuration begin --------------------+" << endl;
+        ss << options_->ToString() << endl;
         ss << endl;
         ss << "ctp:" << endl
-            // << "  ctp_market_front: " << ctp_market_front_ << endl
             << "  ctp_trade_front: " << ctp_trade_front_ << endl
             << "  ctp_broker_id: " << ctp_broker_id_ << endl
             << "  ctp_investor_id: " << ctp_investor_id_ << endl

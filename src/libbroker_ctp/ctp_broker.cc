@@ -2,9 +2,12 @@
 #include "ctp_broker.h"
 
 
-namespace co {
-    CTPBroker::CTPBroker(string accout_id) : Broker(accout_id) {
-
+namespace yijinjing {
+    CTPBroker::CTPBroker() : Broker(), CThostFtdcTraderSpi() {
+        start_index_ = x::RawTime();
+        // query_instruments_finish_.store(false);
+        broker_id_ = Config::Instance()->ctp_broker_id();
+        investor_id_ = Config::Instance()->ctp_investor_id();
     }
 
     CTPBroker::~CTPBroker() {
@@ -376,7 +379,7 @@ namespace co {
                     InsertCzceCode(ctp_code);
                 }
                 if (market) {
-                    string suffix = co::Market2Suffix(market);
+                    string suffix = GetMarketSuffix(market);
                     string code = ctp_code + suffix;
                     int _multiple = p->VolumeMultiple > 0 ? p->VolumeMultiple : 1;
                     all_instruments_.insert(make_pair(code, make_pair(x::GBKToUTF8(x::Trim(p->InstrumentName)), _multiple)));
@@ -429,7 +432,7 @@ namespace co {
                     if (market == co::kMarketCZCE) {
                         InsertCzceCode(ctp_code);
                     }
-                    string suffix = Market2Suffix(market);
+                    string suffix = GetMarketSuffix(market);
                     string code = ctp_code + suffix;
                     // int64_t hedge_flag = ctp_hedge_flag2std(pInvestorPosition->HedgeFlag);
                     int64_t bs_flag = ctp_ls_flag2std(pInvestorPosition->PosiDirection);
@@ -508,7 +511,7 @@ namespace co {
                     if (market == co::kMarketCZCE) {
                         InsertCzceCode(ctp_code);
                     }
-                    string suffix = Market2Suffix(market);
+                    string suffix = GetMarketSuffix(market);
                     string code = ctp_code + suffix;
                     string match_no = x::Trim(pTrade->TradingDay) + "_" + x::Trim(pTrade->TradeID);
                     double match_amount = pTrade->Price * pTrade->Volume;
@@ -739,7 +742,7 @@ namespace co {
             if (market == co::kMarketCZCE) {
                 InsertCzceCode(ctp_code);
             }
-            string suffix = Market2Suffix(market);
+            string suffix = GetMarketSuffix(market);
             string code = ctp_code + suffix;
             if (order_state == kOrderPartlyCanceled || order_state == kOrderFullyCanceled || order_state == kOrderFailed) {
                 std::unique_lock<std::mutex> lock(write_mutex_);
@@ -825,7 +828,7 @@ namespace co {
                 if (market == co::kMarketCZCE) {
                     InsertCzceCode(ctp_code);
                 }
-                string suffix = Market2Suffix(market);
+                string suffix = GetMarketSuffix(market);
                 string code = ctp_code + suffix;
                 string match_no = x::Trim(pTrade->TradingDay) + "_" + x::Trim(pTrade->TradeID);
                 double match_amount = pTrade->Price * pTrade->Volume;
@@ -869,6 +872,25 @@ namespace co {
             }
         } catch (std::exception& e) {
             __error << "recv knock failed: " << e.what();
+        }
+    }
+
+    /// 错误应答
+    void CTPBroker::OnRspError(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) {
+        __error << "OnRspError: ret=" << pRspInfo->ErrorID << ", msg=" << CtpToUTF8(pRspInfo->ErrorMsg);
+        if (pRspInfo->ErrorID == 90) {  // <error id="NEED_RETRY" value="90" prompt="CTP：查询未就绪，请稍后重试" />//
+            x::Sleep(CTP_FLOW_CONTROL_MS);
+        }
+        if (state_ == kStartupStepInit) {
+            Start();
+        } else if (state_ == kStartupStepLoginOver) {
+            ReqSettlementInfoConfirm();
+        } else if (state_ == kStartupStepConfirmSettlementOver) {
+            ReqQryInstrument();
+        } else if (state_ == kStartupStepGetContractsOver) {
+            // ReqQryInvestorPosition();
+        } else if (state_ == kStartupStepGetInitPositionsOver) { // 已启动完成之后，返回异步响应
+
         }
     }
 }

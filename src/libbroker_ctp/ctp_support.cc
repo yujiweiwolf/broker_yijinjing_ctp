@@ -4,9 +4,9 @@
 #include "broker/broker.h"
 #include "boost/algorithm/string.hpp"
 
-namespace co {
+namespace yijinjing {
 
-    // Á÷¿ØÅÐ¶Ï
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
     bool is_flow_control(int ret_code) {
         return ((ret_code == -2) || (ret_code == -3));
     }
@@ -124,10 +124,10 @@ namespace co {
     int64_t ctp_bs_flag2std(TThostFtdcDirectionType v) {
         int64_t std_bs_flag = 0;
         switch (v) {
-        case THOST_FTDC_D_Buy:  // Âò
+        case THOST_FTDC_D_Buy:  // ï¿½ï¿½
             std_bs_flag = kBsFlagBuy;
             break;
-        case THOST_FTDC_D_Sell:  // Âô
+        case THOST_FTDC_D_Sell:  // ï¿½ï¿½
             std_bs_flag = kBsFlagSell;
             break;
         default:
@@ -156,12 +156,12 @@ namespace co {
     int64_t ctp_ls_flag2std(TThostFtdcPosiDirectionType v) {
         int64_t std_bs_flag = 0;
         switch (v) {
-            // case THOST_FTDC_PD_Net:  // ¾»
+            // case THOST_FTDC_PD_Net:  // ï¿½ï¿½
             //    break;
-        case THOST_FTDC_PD_Long:  // ¶àÍ·
+        case THOST_FTDC_PD_Long:  // ï¿½ï¿½Í·
             std_bs_flag = kBsFlagBuy;
             break;
-        case THOST_FTDC_PD_Short:  // ¿ÕÍ·
+        case THOST_FTDC_PD_Short:  // ï¿½ï¿½Í·
             std_bs_flag = kBsFlagSell;
             break;
         default:
@@ -169,6 +169,39 @@ namespace co {
             break;
         }
         return std_bs_flag;
+    }
+
+    string GetMarketSuffix(int64_t market) {
+        string suffix;
+        switch (market) {
+            case kMarketSH:
+                suffix = kSuffixSH;
+                break;
+            case kMarketSZ:
+                suffix = kSuffixSZ;
+                break;
+            case kMarketCFFEX:
+                suffix = kSuffixCFFEX;
+                break;
+            case kMarketSHFE:
+                suffix = kSuffixSHFE;
+                break;
+            case kMarketDCE:
+                suffix = kSuffixDCE;
+                break;
+            case kMarketCZCE:
+                suffix = kSuffixCZCE;
+                break;
+            case kMarketINE:
+                suffix = kSuffixINE;
+                break;
+            case kMarketSGE:
+                suffix = kSuffixSGE;
+                break;
+            default:
+                break;
+        }
+        return suffix;
     }
 
     int64_t ctp_hedge_flag2std(TThostFtdcHedgeFlagType v) {
@@ -212,25 +245,25 @@ namespace co {
     int64_t ctp_oc_flag2std(TThostFtdcOffsetFlagType v) {
         int32_t std_oc_flag = 0;
         switch (v) {
-        case THOST_FTDC_OF_Open:  /// ¿ª²Ö
+        case THOST_FTDC_OF_Open:  /// ï¿½ï¿½ï¿½ï¿½
             std_oc_flag = kOcFlagOpen;
             break;
-        case THOST_FTDC_OF_Close:  /// Æ½²Ö
+        case THOST_FTDC_OF_Close:  /// Æ½ï¿½ï¿½
             std_oc_flag = kOcFlagClose;
             break;
         case THOST_FTDC_OF_ForceClose:  /// Ç¿Æ½
             std_oc_flag = kOcFlagForceClose;
             break;
-        case THOST_FTDC_OF_CloseToday:  /// Æ½½ñ
+        case THOST_FTDC_OF_CloseToday:  /// Æ½ï¿½ï¿½
             std_oc_flag = kOcFlagCloseToday;
             break;
-        case THOST_FTDC_OF_CloseYesterday:  /// Æ½×ò
+        case THOST_FTDC_OF_CloseYesterday:  /// Æ½ï¿½ï¿½
             std_oc_flag = kOcFlagCloseYesterday;
             break;
-        case THOST_FTDC_OF_ForceOff:  /// Ç¿¼õ
+        case THOST_FTDC_OF_ForceOff:  /// Ç¿ï¿½ï¿½
             std_oc_flag = kOcFlagForceOff;
             break;
-        case THOST_FTDC_OF_LocalForceClose:  /// ±¾µØÇ¿Æ½
+        case THOST_FTDC_OF_LocalForceClose:  /// ï¿½ï¿½ï¿½ï¿½Ç¿Æ½
             std_oc_flag = kOcFlagLocalForceClose;
             break;
         default:
@@ -243,25 +276,25 @@ namespace co {
     TThostFtdcOffsetFlagType oc_flag2ctp(int64_t v) {
         TThostFtdcOffsetFlagType ctp_oc_flag = '\0';
         switch (v) {
-        case kOcFlagOpen:  /// ¿ª²Ö
+        case kOcFlagOpen:  /// ï¿½ï¿½ï¿½ï¿½
             ctp_oc_flag = THOST_FTDC_OF_Open;
             break;
-        case kOcFlagClose:  /// Æ½²Ö
+        case kOcFlagClose:  /// Æ½ï¿½ï¿½
             ctp_oc_flag = THOST_FTDC_OF_Close;
             break;
         case kOcFlagForceClose:  /// Ç¿Æ½
             ctp_oc_flag = THOST_FTDC_OF_ForceClose;
             break;
-        case kOcFlagCloseToday :  /// Æ½½ñ
+        case kOcFlagCloseToday :  /// Æ½ï¿½ï¿½
             ctp_oc_flag = THOST_FTDC_OF_CloseToday;
             break;
-        case kOcFlagCloseYesterday:  /// Æ½×ò
+        case kOcFlagCloseYesterday:  /// Æ½ï¿½ï¿½
             ctp_oc_flag = THOST_FTDC_OF_CloseYesterday;
             break;
-        case kOcFlagForceOff:  /// Ç¿¼õ
+        case kOcFlagForceOff:  /// Ç¿ï¿½ï¿½
             ctp_oc_flag = THOST_FTDC_OF_ForceOff;
             break;
-        case kOcFlagLocalForceClose:  /// ±¾µØÇ¿Æ½
+        case kOcFlagLocalForceClose:  /// ï¿½ï¿½ï¿½ï¿½Ç¿Æ½
             ctp_oc_flag = THOST_FTDC_OF_LocalForceClose;
             break;
         default:
@@ -272,26 +305,26 @@ namespace co {
     }
 
     int64_t ctp_order_state2std(TThostFtdcOrderStatusType order_state, TThostFtdcOrderSubmitStatusType submit_state) {
-        // Î¯ÍÐ×´Ì¬: 0: Î´±¨, 1: ´ý±¨, (2: ÒÑ±¨), 3: ÒÑ±¨´ý³·, 4: ²¿³É´ý³·, (5: ²¿³·), (6: ÒÑ³·), (7: ²¿³É), (8: ÒÑ³É), (9: ·Ïµ¥)
+        // Î¯ï¿½ï¿½×´Ì¬: 0: Î´ï¿½ï¿½, 1: ï¿½ï¿½ï¿½ï¿½, (2: ï¿½Ñ±ï¿½), 3: ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½ï¿½, 4: ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½, (5: ï¿½ï¿½ï¿½ï¿½), (6: ï¿½Ñ³ï¿½), (7: ï¿½ï¿½ï¿½ï¿½), (8: ï¿½Ñ³ï¿½), (9: ï¿½Ïµï¿½)
         int64_t std_order_state = 0;
         switch (order_state) {
-        case THOST_FTDC_OST_AllTraded:  /// È«²¿³É½»
+        case THOST_FTDC_OST_AllTraded:  /// È«ï¿½ï¿½ï¿½É½ï¿½
             std_order_state = kOrderFullyKnocked;
             break;
-        case THOST_FTDC_OST_PartTradedQueueing:  /// ²¿·Ö³É½»»¹ÔÚ¶ÓÁÐÖÐ
+        case THOST_FTDC_OST_PartTradedQueueing:  /// ï¿½ï¿½ï¿½Ö³É½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½
             std_order_state = kOrderPartlyKnocked;
             break;
-        case THOST_FTDC_OST_PartTradedNotQueueing:  /// ²¿·Ö³É½»²»ÔÚ¶ÓÁÐÖÐ, ¼´¡°²¿³É²¿³·¡±
+        case THOST_FTDC_OST_PartTradedNotQueueing:  /// ï¿½ï¿½ï¿½Ö³É½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²ï¿½ï¿½ï¿½ï¿½ï¿½
             std_order_state = kOrderPartlyCanceled;
             break;
-        case THOST_FTDC_OST_NoTradeQueueing:  /// Î´³É½»»¹ÔÚ¶ÓÁÐÖÐ
+        case THOST_FTDC_OST_NoTradeQueueing:  /// Î´ï¿½É½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½
             std_order_state = kOrderCreated;
             break;
-        case THOST_FTDC_OST_NoTradeNotQueueing:  /// Î´³É½»²»ÔÚ¶ÓÁÐÖÐ, ·Ç·¨Éê±¨
+        case THOST_FTDC_OST_NoTradeNotQueueing:  /// Î´ï¿½É½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ç·ï¿½ï¿½ê±¨
             std_order_state = kOrderFailed;
             break;
-        case THOST_FTDC_OST_Canceled:  /// ³·µ¥
-            if (submit_state == THOST_FTDC_OSS_InsertRejected || submit_state == THOST_FTDC_OSS_ModifyRejected) {  // ±¨µ¥ÒÑ¾­±»¾Ü¾ø, ¸Äµ¥ÒÑ¾­±»¾Ü¾ø
+        case THOST_FTDC_OST_Canceled:  /// ï¿½ï¿½ï¿½ï¿½
+            if (submit_state == THOST_FTDC_OSS_InsertRejected || submit_state == THOST_FTDC_OSS_ModifyRejected) {  // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ü¾ï¿½, ï¿½Äµï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ü¾ï¿½
                 std_order_state = kOrderFailed;
             } else {
                 std_order_state = kOrderFullyCanceled;
@@ -300,10 +333,10 @@ namespace co {
         case THOST_FTDC_OST_Unknown:  /// Î´Öª
             std_order_state = kOrderCreated;
             break;
-        case THOST_FTDC_OST_NotTouched:  /// ÉÐÎ´´¥·¢
+        case THOST_FTDC_OST_NotTouched:  /// ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½
             std_order_state = kOrderCreated;
             break;
-        case THOST_FTDC_OST_Touched:  /// ÒÑ´¥·¢
+        case THOST_FTDC_OST_Touched:  /// ï¿½Ñ´ï¿½ï¿½ï¿½
             std_order_state = kOrderCreated;
             break;
         default:
@@ -317,55 +350,55 @@ namespace co {
         TThostFtdcOrderPriceTypeType ret = '\0';
         switch (v) {
         case 0:
-            ret = THOST_FTDC_OPT_LimitPrice;  /// Ä¬ÈÏ: ÏÞ¼Û
+            ret = THOST_FTDC_OPT_LimitPrice;  /// Ä¬ï¿½ï¿½: ï¿½Þ¼ï¿½
             break;
         case 1:
-            ret = THOST_FTDC_OPT_AnyPrice;  /// ÈÎÒâ¼Û
+            ret = THOST_FTDC_OPT_AnyPrice;  /// ï¿½ï¿½ï¿½ï¿½ï¿½
             break;
         case 2:
-            ret = THOST_FTDC_OPT_LimitPrice;  /// ÏÞ¼Û
+            ret = THOST_FTDC_OPT_LimitPrice;  /// ï¿½Þ¼ï¿½
             break;
         case 3:
-            ret = THOST_FTDC_OPT_BestPrice;  /// ×îÓÅ¼Û
+            ret = THOST_FTDC_OPT_BestPrice;  /// ï¿½ï¿½ï¿½Å¼ï¿½
             break;
         case 4:
-            ret = THOST_FTDC_OPT_LastPrice;  /// ×îÐÂ¼Û
+            ret = THOST_FTDC_OPT_LastPrice;  /// ï¿½ï¿½ï¿½Â¼ï¿½
             break;
         case 5:
-            ret = THOST_FTDC_OPT_LastPricePlusOneTicks;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = THOST_FTDC_OPT_LastPricePlusOneTicks;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case 6:
-            ret = THOST_FTDC_OPT_LastPricePlusTwoTicks;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = THOST_FTDC_OPT_LastPricePlusTwoTicks;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case 7:
-            ret = THOST_FTDC_OPT_LastPricePlusThreeTicks;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = THOST_FTDC_OPT_LastPricePlusThreeTicks;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case 8:
-            ret = THOST_FTDC_OPT_AskPrice1;  /// ÂôÒ»¼Û
+            ret = THOST_FTDC_OPT_AskPrice1;  /// ï¿½ï¿½Ò»ï¿½ï¿½
             break;
         case 9:
-            ret = THOST_FTDC_OPT_AskPrice1PlusOneTicks;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = THOST_FTDC_OPT_AskPrice1PlusOneTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case 10:
-            ret = THOST_FTDC_OPT_AskPrice1PlusTwoTicks;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = THOST_FTDC_OPT_AskPrice1PlusTwoTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case 11:
-            ret = THOST_FTDC_OPT_AskPrice1PlusThreeTicks;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = THOST_FTDC_OPT_AskPrice1PlusThreeTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case 12:
-            ret = THOST_FTDC_OPT_BidPrice1;  /// ÂòÒ»¼Û
+            ret = THOST_FTDC_OPT_BidPrice1;  /// ï¿½ï¿½Ò»ï¿½ï¿½
             break;
         case 13:
-            ret = THOST_FTDC_OPT_BidPrice1PlusOneTicks;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = THOST_FTDC_OPT_BidPrice1PlusOneTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case 14:
-            ret = THOST_FTDC_OPT_BidPrice1PlusTwoTicks;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = THOST_FTDC_OPT_BidPrice1PlusTwoTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case 15:
-            ret = THOST_FTDC_OPT_BidPrice1PlusThreeTicks;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = THOST_FTDC_OPT_BidPrice1PlusThreeTicks;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case 16:
-            ret = THOST_FTDC_OPT_FiveLevelPrice;  // Îåµµ¼Û
+            ret = THOST_FTDC_OPT_FiveLevelPrice;  // ï¿½åµµï¿½ï¿½
             break;
         default:
             xthrow() << "unknown order_price_type: " << v;
@@ -378,52 +411,52 @@ namespace co {
         int64_t ret = 0;
         switch (v) {
         case THOST_FTDC_OPT_AnyPrice:
-            ret = 1;  /// ÈÎÒâ¼Û
+            ret = 1;  /// ï¿½ï¿½ï¿½ï¿½ï¿½
             break;
         case THOST_FTDC_OPT_LimitPrice:
-            ret = 2;  /// ÏÞ¼Û
+            ret = 2;  /// ï¿½Þ¼ï¿½
             break;
         case THOST_FTDC_OPT_BestPrice:
-            ret = 3;  /// ×îÓÅ¼Û
+            ret = 3;  /// ï¿½ï¿½ï¿½Å¼ï¿½
             break;
         case THOST_FTDC_OPT_LastPrice:
-            ret = 4;  /// ×îÐÂ¼Û
+            ret = 4;  /// ï¿½ï¿½ï¿½Â¼ï¿½
             break;
         case THOST_FTDC_OPT_LastPricePlusOneTicks:
-            ret = 5;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = 5;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_LastPricePlusTwoTicks:
-            ret = 6;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = 6;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_LastPricePlusThreeTicks:
-            ret = 7;  /// ×îÐÂ¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = 7;  /// ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_AskPrice1:
-            ret = 8;  /// ÂôÒ»¼Û
+            ret = 8;  /// ï¿½ï¿½Ò»ï¿½ï¿½
             break;
         case THOST_FTDC_OPT_AskPrice1PlusOneTicks:
-            ret = 9;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = 9;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_AskPrice1PlusTwoTicks:
-            ret = 10;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = 10;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_AskPrice1PlusThreeTicks:
-            ret = 11;  /// ÂôÒ»¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = 11;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_BidPrice1:
-            ret = 12;  /// ÂòÒ»¼Û
+            ret = 12;  /// ï¿½ï¿½Ò»ï¿½ï¿½
             break;
         case THOST_FTDC_OPT_BidPrice1PlusOneTicks:
-            ret = 13;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡1¸öticks
+            ret = 13;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½1ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_BidPrice1PlusTwoTicks:
-            ret = 14;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡2¸öticks
+            ret = 14;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½2ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_BidPrice1PlusThreeTicks:
-            ret = 15;  /// ÂòÒ»¼Û¸¡¶¯ÉÏ¸¡3¸öticks
+            ret = 15;  /// ï¿½ï¿½Ò»ï¿½Û¸ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½3ï¿½ï¿½ticks
             break;
         case THOST_FTDC_OPT_FiveLevelPrice:
-            ret = 16;  // Îåµµ¼Û
+            ret = 16;  // ï¿½åµµï¿½ï¿½
             break;
         default:
             xthrow() << "unknown order_price_type: " << v;
@@ -434,7 +467,7 @@ namespace co {
 
     TThostFtdcTimeConditionType order_time_condition2ctp(string v) {
         TThostFtdcTimeConditionType ret;
-        if (v.empty() || v == "General_Order") {  // µ±ÈÕÓÐÐ§
+        if (v.empty() || v == "General_Order") {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
             ret = THOST_FTDC_TC_GFD;
         } else if (v == "Automatically_Withdraw") {
             ret = THOST_FTDC_TC_IOC;
@@ -447,33 +480,33 @@ namespace co {
     double ctp_equity(CThostFtdcTradingAccountField *p) {
         /*
         ==========================================
-        ÉÏ´Î½áËã×¼±¸½ð: ¡¡          1006015.23
-        - ÉÏ´ÎÐÅÓÃ¶î¶È: ¡¡¡¡                0.00
-        - ÉÏ´ÎÖÊÑº½ð¶î: ¡¡¡¡                0.00
-        + ÖÊÑº½ð¶î: ¡¡¡¡¡¡¡¡                0.00
-        - ½ñÈÕ³ö½ð: ¡¡¡¡¡¡¡¡                0.00
-        + ½ñÈÕÈë½ð: ¡¡¡¡¡¡¡¡                0.00
+        ï¿½Ï´Î½ï¿½ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½          1006015.23
+        - ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½                0.00
+        - ï¿½Ï´ï¿½ï¿½ï¿½Ñºï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½                0.00
+        + ï¿½ï¿½Ñºï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        - ï¿½ï¿½ï¿½Õ³ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        + ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
         ------------------------------------------
-        = ¾²Ì¬È¨Òæ: ¡¡¡¡¡¡¡¡          1006015.23
-        + Æ½²ÖÓ¯¿÷: ¡¡¡¡¡¡¡¡                0.00
-        + ³Ö²ÖÓ¯¿÷: ¡¡¡¡¡¡¡¡                0.00
-        + È¨Àû½ð: ¡¡¡¡¡¡¡¡¡¡                0.00
-        - ÊÖÐø·Ñ: ¡¡¡¡¡¡¡¡¡¡                0.00
+        = ï¿½ï¿½Ì¬È¨ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½          1006015.23
+        + Æ½ï¿½ï¿½Ó¯ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        + ï¿½Ö²ï¿½Ó¯ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        + È¨ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
         ------------------------------------------
-        = ¶¯Ì¬È¨Òæ: ¡¡¡¡¡¡¡¡          1006015.23£»
-        - Õ¼ÓÃ±£Ö¤½ð: ¡¡¡¡¡¡                0.00
-        - ¶³½á±£Ö¤½ð: ¡¡¡¡¡¡           432128.00
-        - ¶³½áÊÖÐø·Ñ: ¡¡¡¡¡¡               27.01
-        - ½»¸î±£Ö¤½ð: ¡¡¡¡¡¡                0.00
-        - ¶³½áÈ¨Àû½ð: ¡¡¡¡¡¡                0.00
-        + ÐÅÓÃ½ð¶î: ¡¡¡¡¡¡¡¡                0.00
+        = ï¿½ï¿½Ì¬È¨ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½          1006015.23ï¿½ï¿½
+        - Õ¼ï¿½Ã±ï¿½Ö¤ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        - ï¿½ï¿½ï¿½á±£Ö¤ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½           432128.00
+        - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½               27.01
+        - ï¿½ï¿½ï¿½î±£Ö¤ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        - ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        + ï¿½ï¿½ï¿½Ã½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
         ------------------------------------------
-        = ¿ÉÓÃ×Ê½ð: ¡¡¡¡¡¡¡¡           573860.22
+        = ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½           573860.22
         ==========================================
 
         ==========================================
-        ±£µ××Ê½ð: ¡¡¡¡¡¡¡¡                0.00
-        ¿ÉÈ¡×Ê½ð: ¡¡¡¡¡¡¡¡           401702.16
+        ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                0.00
+        ï¿½ï¿½È¡ï¿½Ê½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½           401702.16
         ==========================================
         */
         double static_equity = p->PreBalance
