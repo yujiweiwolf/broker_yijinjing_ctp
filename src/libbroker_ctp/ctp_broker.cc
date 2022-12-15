@@ -387,6 +387,7 @@ namespace yijinjing {
             }
             if (bIsLast) {
                 __info << "query all future contracts ok: contracts = " << all_instruments_.size();
+                state_ = kStartupStepGetInitPositionsOver;
             }
         } else {
             __error << "query all future contracts failed: " << CtpError(pRspInfo->ErrorID, pRspInfo->ErrorMsg);

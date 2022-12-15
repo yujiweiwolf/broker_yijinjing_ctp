@@ -24,6 +24,8 @@ namespace yijinjing {
 
         void StartWork(yijinjing::BrokerOptionsPtr options);
 
+        void Run();
+
         void SetWriteBrokerFile(const string &dir, const string &file, const string &client);
 
         void AddReadStrategyFile(const string &dir, const string &file, const string &client);
@@ -40,7 +42,7 @@ namespace yijinjing {
 
         virtual void OnTradeWithdraw(TradeWithdrawMessage *req) {};
     private:
-        void Run();
+        void Read();
 
         void ProcessMessage(yijinjing::FramePtr frame);
 

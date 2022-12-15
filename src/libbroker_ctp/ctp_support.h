@@ -14,13 +14,13 @@
 
 using namespace co;
 namespace yijinjing {
-    // CTPå¯¹æŸ¥è¯¢è¯·æ±‚è®¾ç½®äº†æµé‡æ§åˆ¶, æ¯ç§’æœ€å¤šè¿›è¡Œä¸€æ¬¡æŸ¥è¯¢æ“ä½œ
+    // CTP¶Ô²éÑ¯ÇëÇóÉèÖÃÁËÁ÷Á¿¿ØÖÆ, Ã¿Ãë×î¶à½øĞĞÒ»´Î²éÑ¯²Ù×÷
     constexpr int64_t CTP_FLOW_CONTROL_MS = 1000;
-    constexpr int kStartupStepInit = 0;  // å¯åŠ¨æ­¥éª¤ï¼šå¼€å§‹
-    constexpr int kStartupStepLoginOver = 1;  // å¯åŠ¨æ­¥éª¤ï¼šå·²ç™»å½•
-    constexpr int kStartupStepConfirmSettlementOver = 2;  // å¯åŠ¨æ­¥éª¤ï¼šå·²ç¡®è®¤ç»“ç®—å•
-    constexpr int kStartupStepGetContractsOver = 3;  // å¯åŠ¨æ­¥éª¤ï¼šå·²æŸ¥è¯¢æ‰€æœ‰åˆçº¦ä¿¡æ¯
-    constexpr int kStartupStepGetInitPositionsOver = 4;  // å¯åŠ¨æ­¥éª¤ï¼šå·²æŸ¥è¯¢æ‰€æœ‰æŒä»“ä¿¡æ¯
+    constexpr int kStartupStepInit = 0;  // Æô¶¯²½Öè£º¿ªÊ¼
+    constexpr int kStartupStepLoginOver = 1;  // Æô¶¯²½Öè£ºÒÑµÇÂ¼
+    constexpr int kStartupStepConfirmSettlementOver = 2;  // Æô¶¯²½Öè£ºÒÑÈ·ÈÏ½áËãµ¥
+    constexpr int kStartupStepGetContractsOver = 3;  // Æô¶¯²½Öè£ºÒÑ²éÑ¯ËùÓĞºÏÔ¼ĞÅÏ¢
+    constexpr int kStartupStepGetInitPositionsOver = 4;  // Æô¶¯²½Öè£ºÒÑ²éÑ¯ËùÓĞ³Ö²ÖĞÅÏ¢
 
     string CtpApiError(int rc);
     string CtpToUTF8(const char* str);

@@ -12,12 +12,12 @@ namespace yijinjing {
         std::string trading_day = std::to_string(x::RawDate());
         std::string broker_dir = options->broker_dir();
         std::string broker_name_ = options->broker_name();
-        std::string broker_file = broker_name_ + "_" + trading_day;
-        writer_ = yijinjing::JournalWriter::create(broker_dir, broker_file, broker_name_);
-
         std::string strategy_dir_ = options->strategy_dir();
         std::string fund_id = options->fund_id();
         string key = fund_id + "_" + trading_day;
+        std::string broker_file = "broker_" + fund_id + "_" + trading_day;
+        writer_ = yijinjing::JournalWriter::create(broker_dir, broker_file, broker_name_);
+
         std::set<std::string> all_strategy;
         if (boost::filesystem::exists(strategy_dir_)) {
             boost::filesystem::path p(strategy_dir_);
@@ -37,12 +37,18 @@ namespace yijinjing {
         }
 
         OnInit();
-        thread_ = std::make_shared<std::thread>(std::bind(&Broker::Run, this));
+        thread_ = std::make_shared<std::thread>(std::bind(&Broker::Read, this));
         thread_->detach();
     }
 
+    void Broker::Run() {
+        while (true) {
+            x::Sleep(1000);
+        }
+    }
+
     void Broker::SetWriteBrokerFile(const string &dir, const string &file, const string &client) {
-        writer_ = yijinjing::JournalWriter::create(dir, file, client);
+        // writer_ = yijinjing::JournalWriter::create(dir, file, client);
     }
 
     void Broker::AddReadStrategyFile(const string &dir, const string &file, const string &client) {
@@ -54,7 +60,7 @@ namespace yijinjing {
         reader_->seekTimeJournalByName(file, yijinjing::TIME_TO_LAST);
     }
 
-    void Broker::Run() {
+    void Broker::Read() {
         while (true) {
             yijinjing::FramePtr frame = reader_->getNextFrame();
             if (frame.get() != nullptr) {

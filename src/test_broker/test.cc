@@ -1,10 +1,16 @@
 #include <regex>
 #include "../libbroker_ctp/ctp_broker.h"
+#include "test_strategy.h"
 using namespace yijinjing;
 using namespace std;
 
 string fund_id = "1000858";
-string strategy_dir = "/home/work/sys/develop/broker_yijinjing_ctp/strategy";
+#ifdef _MSC_VER
+string strategy_dir = "E:\\develop\\Broker\\broker_yijinjing_ctp\\vs2019\\test\\strategy";
+string broker_dir = "E:\\develop\\Broker\\broker_yijinjing_ctp\\vs2019\\test\\broker";
+#else
+
+#endif // _WINDOWS
 
 // BUY IC2212.CFFEX 1 5606.6
 // BUY y2211.DCE 1 10770
@@ -89,22 +95,29 @@ void withdraw(JournalWriterPtr writer) {
     writer->passFrame(frame, sizeof(TradeWithdrawMessage), TRADE_WITHDRAQ_REQ, 0);
 }
 
-void query_asset(std::shared_ptr<yijinjing::Broker> broker) {
+void query_asset(JournalWriterPtr writer) {
 }
 
-void query_position(std::shared_ptr<yijinjing::Broker> broker) {
+void query_position(JournalWriterPtr writer) {
 }
 
-void query_knock(std::shared_ptr<yijinjing::Broker> broker) {
+void query_knock(JournalWriterPtr writer) {
 }
 
 int main() {
-    std::string file_name = string("jump") + "_" + fund_id + "_" + std::to_string(x::RawDate());
-    JournalWriterPtr writer = yijinjing::JournalWriter::create(strategy_dir.c_str(), file_name.c_str(), "test_strategy");
+    TestStrategy test;
+    string strategy_name = "jump";
+    test.SetStragety(strategy_name, 99);
 
-    BrokerOptionsPtr options = Config::Instance()->options();
-    shared_ptr<yijinjing::CTPBroker> broker = make_shared<yijinjing::CTPBroker>();
-    broker->StartWork(options);
+    string suffix = "_" + std::to_string(x::RawDate());
+    string broker_file = "broker_" + fund_id + suffix;
+    test.AddReadFile(broker_dir.c_str(), broker_file);
+
+    string strategy_file = strategy_name + "_" + fund_id + suffix;
+    test.AddWriteFile(strategy_dir.c_str(), strategy_file.c_str());
+    test.StartWork();
+    JournalWriterPtr writer = test.GetJournalWriter();
+
     string usage("\nTYPE  'q' to quit program\n");
     usage += "      '1' to order\n";
     usage += "      '2' to withdraw\n";
@@ -127,15 +140,15 @@ int main() {
             break;
         }
         case '5': {
-            query_asset(broker);
+            query_asset(writer);
             break;
         }
         case '6': {
-            query_position(broker);
+            query_position(writer);
             break;
         }
         case '8': {
-            query_knock(broker);
+            query_knock(writer);
             break;
         }
         default:

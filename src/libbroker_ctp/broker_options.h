@@ -12,7 +12,7 @@ namespace yijinjing {
     using namespace std;
 
     /**
-     * æŸœå°æ¥å£æœåŠ¡å™¨é…ç½®é€‰é¡¹
+     * ¹ñÌ¨½Ó¿Ú·şÎñÆ÷ÅäÖÃÑ¡Ïî
      */
     class BrokerOptions {
     public:
@@ -89,18 +89,18 @@ namespace yijinjing {
         std::string upstream_address_;
         std::string wal_;
 
-        bool enable_upload_ = true; // æ˜¯å¦å¯ç”¨ä¸Šä¼ äº¤æ˜“æ•°æ®
+        bool enable_upload_ = true; // ÊÇ·ñÆôÓÃÉÏ´«½»Ò×Êı¾İ
 
-        int64_t request_timeout_ms_ = 5000; // è¯·æ±‚è¶…æ—¶æ—¶é—´
+        int64_t request_timeout_ms_ = 5000; // ÇëÇó³¬Ê±Ê±¼ä
 
         bool enable_stock_short_selling_ = false;
-        bool enable_query_only_ = false; // æ˜¯å¦å¯ç”¨åªæŸ¥è¯¢æ¨¡å¼ï¼Œä¸æ¥æ”¶æŠ¥å•å’Œæ’¤å•ç­‰æŒ‡ä»¤
+        bool enable_query_only_ = false; // ÊÇ·ñÆôÓÃÖ»²éÑ¯Ä£Ê½£¬²»½ÓÊÕ±¨µ¥ºÍ³·µ¥µÈÖ¸Áî
 
-        int64_t query_asset_interval_ms_ = 0; // èµ„é‡‘æŸ¥è¯¢æ—¶é—´é—´éš”
-        int64_t query_position_interval_ms_ = 0; // æŒä»“æŸ¥è¯¢æ—¶é—´é—´éš”
-        int64_t query_knock_interval_ms_ = 0; // æˆäº¤æŸ¥è¯¢æ—¶é—´é—´éš”
-        int64_t idle_sleep_ns_ = 100000; // æ— é”é˜Ÿåˆ—ç©ºè½¬æ—¶ä¼‘çœ æ—¶é—´ï¼ˆå•ä½ï¼šçº³ç§’ï¼‰
-        int64_t cpu_affinity_ = -1; // CPUæ ¸ç»‘å®š
+        int64_t query_asset_interval_ms_ = 0; // ×Ê½ğ²éÑ¯Ê±¼ä¼ä¸ô
+        int64_t query_position_interval_ms_ = 0; // ³Ö²Ö²éÑ¯Ê±¼ä¼ä¸ô
+        int64_t query_knock_interval_ms_ = 0; // ³É½»²éÑ¯Ê±¼ä¼ä¸ô
+        int64_t idle_sleep_ns_ = 100000; // ÎŞËø¶ÓÁĞ¿Õ×ªÊ±ĞİÃßÊ±¼ä£¨µ¥Î»£ºÄÉÃë£©
+        int64_t cpu_affinity_ = -1; // CPUºË°ó¶¨
         std::string fund_id_;
         std::string broker_dir_;
         std::string broker_name_;
